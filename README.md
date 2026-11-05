@@ -2,6 +2,36 @@
 
 Ein ruhiges Cyberpunk-HUD für Pi Pocket **0.27.0 oder neuer**, Theme API 1.
 
+## Installation und Updates
+
+Im ausgecheckten Repository ausführen:
+
+```bash
+bash install.sh
+```
+
+Voraussetzungen: Bash und Pi Pocket **0.27.0 oder neuer**. Keine zusätzlichen
+Pakete, kein Build und kein `sudo` erforderlich.
+
+Das Script kopiert die Theme-Dateien nach `~/.pi-pocket/themes/neon-2077`.
+Wie beim Terminal-Installer lässt sich das Pi-Pocket-Datenverzeichnis mit
+`PI_POCKET_DIR` ändern:
+
+```bash
+PI_POCKET_DIR="/pfad/zu/pi-pocket-daten" bash install.sh
+```
+
+Für Updates den aktuellen Repository-Stand holen und das Script erneut
+aufrufen. Dabei werden `theme.json`, `colors.toml`, `interface.css` und
+`theme.css` ersetzt; eigene Änderungen an diesen Dateien vorher sichern.
+Eine vorhandene `fonts.css` bleibt unverändert. Fehlt sie, legt der Installer
+nur einen leeren CSS-Platzhalter für den Import in `theme.css` an, ohne die
+persönlichen Schriftwerte aus dem Repository zu übernehmen.
+
+Die Installation wählt das Theme nicht automatisch aus und ändert keine
+persönlichen Appearance-Einstellungen. Anschließend wie unten beschrieben
+aktivieren. Ein Server-Neustart ist nicht erforderlich.
+
 ## Verwenden
 
 In **Appearance → Theme** `NEON//2077` wählen. Für die vorgesehene Farbpalette
@@ -20,9 +50,12 @@ nicht erforderlich. Das Theme ändert keine persönlichen Appearance-Werte.
   Anpassungen für alternativ gewählte helle Farben.
 - `interface.css`: HUD-Details für Navigation, Nachrichten, Tools, Composer,
   Dialoge, Launcher und Panels; responsive und reduzierte Bewegung.
+- `install.sh`: Installation und Updates im Pi-Pocket-Datenverzeichnis.
 
-Die Appearance-Schriftwahl kann zusätzlich `fonts.css` anlegen und dessen
-Import voranstellen. Diese Datei wird vom Theme nicht erstellt oder verändert.
+`theme.css` importiert `fonts.css` für persönliche Schriftwerte aus Appearance.
+Der Installer legt diese Datei nur dann als CSS-Platzhalter an, wenn sie fehlt.
+Vorhandene Schriftwerte bleiben erhalten; die `fonts.css` aus dem Repository
+wird nicht installiert.
 
 ## Designsprache
 
@@ -48,6 +81,17 @@ Textgröße, Fonts, Ligaturen, Breite, Sidebar-Breite, Dichte und Bewegung werde
 nicht überschrieben. Desktop-Wallpaper bleibt ebenfalls unangetastet.
 
 ## Prüfung
+
+Installer-Syntax und isolierte Installationstests (Python 3, Standardbibliothek):
+
+```bash
+bash -n install.sh
+python3 -m unittest discover -s test -v
+```
+
+Die Installationstests verwenden ausschließlich temporäre Verzeichnisse.
+Sie prüfen Standard- und eigene Datenpfade, Aufrufe aus anderen Verzeichnissen,
+Updates sowie den Erhalt persönlicher Schriftwerte.
 
 Geprüft gegen die installierte Pi-Pocket-Version **0.27.0**:
 
