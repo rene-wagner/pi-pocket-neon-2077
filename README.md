@@ -73,12 +73,41 @@ wird nicht installiert.
   Eckenmotiv. Kein `clip-path` auf Text oder Bedienelementen.
 - Sehr schwache Scanlines nur auf der Rail, Grid nur auf dem Home-Screen.
   Keine überlagerten Effekte auf Antworten oder Freigaben.
-- Keine zusätzlichen Endlosanimationen, kein Blur, keine externen Ressourcen.
+- Kleine, zustandsgebundene Lichtanimationen statt dauernder Dekoration.
+  Keine Hintergrund-Endlosanimationen, kein Blur, keine externen Ressourcen.
 
 Die vorhandenen Layouts, Touch-Trefferflächen, Safe Areas, Scrollbereiche,
 Tool-Zustandsicons und Tastatur-Fokusringe bleiben erhalten. Persönliche
 Textgröße, Fonts, Ligaturen, Breite, Sidebar-Breite, Dichte und Bewegung werden
 nicht überschrieben. Desktop-Wallpaper bleibt ebenfalls unangetastet.
+
+## Bewegung
+
+Das HUD bleibt im Leerlauf ruhig. Drei kleine Effekte zeigen echte Aktivität
+oder den Eingabefokus, ohne Texte oder Layout zu bewegen:
+
+- **Datenimpuls:** Ein Lichtimpuls läuft alle **2,4 s** durch die segmentierte
+  Signallinie der Titelleiste, solange die aktuelle Unterhaltung arbeitet
+  (Denken, Antwort-Streaming oder Kontextkomprimierung). Andere Sessions lösen
+  ihn nicht aus. Bei Freigabe-/Antwort-Wartezuständen und Provider-Limits steht
+  die Linie still. Sie zeigt Aktivität, keinen prozentualen Fortschritt.
+- **Tool-Puls:** Nur die Statusmarke eines laufenden Tools erhält einen sanften
+  magentafarbenen Lichtpuls mit **2,2 s** Periodendauer. Statusicon, Spinner und
+  Timeline bleiben erhalten. Bei jedem anderen Tool-Zustand endet der Puls.
+  Ein tatsächlich weiterlaufendes paralleles Tool pulsiert auch dann, wenn
+  ein anderer Aufruf auf Freigabe wartet; die Freigabekarte selbst bleibt ruhig.
+- **Neon-Zündung:** Beim Fokussieren des Eingabefelds leuchtet dessen Kontur
+  einmal für **240 ms** auf und geht in den ruhigen Fokusrahmen über. Tippen
+  oder der Fokuswechsel zwischen enthaltenen Bedienelementen startet den
+  Effekt nicht erneut.
+
+Die Aktivitätseffekte wiederholen sich nur, solange ihr Zustand vorliegt.
+Antworten, Code und Freigaben erhalten keine bewegten Überlagerungen.
+**Appearance → reduzierte Bewegung** und **`prefers-reduced-motion: reduce`**
+schalten alle zusätzlichen Animationen und Übergänge ab. Im
+**Forced-Colors-Modus** entfallen die dekorativen Effekte ebenfalls; der
+Tastaturfokus bleibt sichtbar. Die gewählte Farbpalette gilt auch für die
+Animationen, einschließlich heller Alternativfarben.
 
 ## Prüfung
 
@@ -107,8 +136,16 @@ Geprüft gegen die installierte Pi-Pocket-Version **0.27.0**:
   lange Dialoginhalte bleiben scrollbar.
 - Persönliche Schrift-, Größen-, Dichte- und Breitenwerte sowie helle
   Alternativfarben geprüft. Text bis 32 px erzeugt keinen Seitenüberlauf.
-- Reduzierte Bewegung über Appearance im Browser geprüft; der zusätzliche
-  `prefers-reduced-motion`-Selektor wurde auf korrekte Kaskade geprüft.
+- Lichtanimationen in Chromium bei **320, 390, 820, 1280 und 1920 px** geprüft:
+  aktive/ruhende Unterhaltung, Aktivität einer anderen Session, Freigabe- und
+  Provider-Limit-Wartezustände, alle 6 Tool-Zustände und Composer-Fokus.
+  Signal und Tool-Puls stoppen beim Zustandswechsel; Tippen und interne
+  Fokuswechsel starten die Neon-Zündung nicht erneut. Keine Layoutbewegung.
+- Appearance-Bewegung (`full`, `fluid`, `reduced` und ohne gesetztes Attribut),
+  emuliertes **`prefers-reduced-motion: reduce`** und **Forced Colors** geprüft.
+  Die zusätzlichen Effekte sind bei reduzierter Bewegung bzw. Forced Colors
+  deaktiviert; der statische Fokus bleibt erhalten. Dunkle und helle Farben
+  sowie unveränderte Statusicons und Timeline-Maskierung geprüft.
 - Textkontrast auf Navy: Ice White **16,42:1**, Muted Blue **5,82:1**;
   alle verwendeten Syntax-/Status-Akzentfarben mindestens **5,29:1**.
 
