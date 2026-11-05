@@ -1,0 +1,447 @@
+/* NEON//2077 · supported parts only, no app-internal class dependencies. */
+
+/* ── Frame: dark instruments and a cyan / magenta / yellow signal line ── */
+[data-part~="sidebar"],
+[data-part~="drawer"] {
+    background: var(--panel);
+    /* Window border tokens keep the tiled focus state in control. */
+}
+
+[data-part~="rail"] {
+    background-color: color-mix(in srgb, var(--desk) 65%, var(--panel));
+    background-image: repeating-linear-gradient(
+        0deg,
+        color-mix(in srgb, var(--o-blue) 3%, transparent) 0 1px,
+        transparent 1px 6px
+    );
+    border-color: var(--line);
+}
+
+[data-part~="brand-mark"] {
+    color: var(--brand);
+}
+
+[data-part~="topbar"] {
+    position: relative;
+    background: color-mix(in srgb, var(--panel) 80%, var(--bg));
+    border-block-end: 1px solid var(--line);
+}
+
+[data-part~="topbar"]::after {
+    content: "";
+    position: absolute;
+    inset-block-end: -1px;
+    inset-inline-end: 18px;
+    width: 176px;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent 0 4%,
+        var(--accent) 4% 26%,
+        transparent 26% 31%,
+        var(--accent-2) 31% 76%,
+        transparent 76% 82%,
+        var(--brand) 82% 100%
+    );
+    pointer-events: none;
+}
+
+[data-part~="topbar-title"] {
+    letter-spacing: 0.01em;
+}
+
+[data-part~="topbar-sub"],
+[data-part~="prompt-head"],
+[data-part~="session-group-count"],
+[data-part~="session-limit"],
+[data-part~="status-line"],
+[data-part~="home-recent-key"] {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+}
+
+[data-part~="session-list-title"],
+[data-part~="home-heading"],
+[data-part~="launcher-group"] {
+    font-family: var(--mono);
+    letter-spacing: 0.055em;
+}
+
+/* Yellow navigation landmarks echo the brand, not a fabricated alert. */
+[data-part~="session-list-title"],
+[data-part~="home-heading"] {
+    color: var(--brand);
+}
+
+[data-part~="rail-button"] {
+    border-radius: var(--r-control);
+}
+
+[data-part~="rail-button"][data-state~="busy"] {
+    color: var(--spark);
+}
+
+[data-part~="rail-button"][data-state~="open"] {
+    color: var(--accent);
+    background: var(--accent-soft);
+    box-shadow: inset 0 0 0 1px var(--accent-line);
+}
+
+[data-part~="session-search"] {
+    background-color: var(--bg);
+    border-color: var(--hair-2);
+}
+
+[data-part~="session-search"]:focus-within {
+    border-color: var(--accent-line);
+}
+
+[data-part~="segment-thumb"] {
+    background: var(--raised);
+    box-shadow: inset 0 -1px var(--accent-line);
+}
+
+[data-part~="session-row"] {
+    border-radius: var(--r-row);
+}
+
+[data-part~="session-row"]:has([data-part~="session-button"][aria-current="page"]) {
+    background: var(--accent-soft);
+    /* An inset frame does not change the row or resize-handle geometry. */
+    box-shadow: inset 0 0 0 1px var(--accent-line);
+}
+
+[data-part~="session-button"][aria-current="page"] {
+    color: var(--text);
+    background: transparent;
+    border-inline-start-color: var(--accent);
+}
+
+/* Keep folder colors and state shapes. An open session keeps its cyan frame. */
+[data-part~="session-row"][data-state="waiting"]:not(:has([aria-current="page"])) {
+    background: var(--warn-soft);
+    box-shadow: inset 0 0 0 1px var(--warn-line);
+}
+
+[data-part~="session-row"][data-state="waiting"] [data-part~="session-quick"],
+[data-part~="session-row"][data-state="limited"] [data-part~="session-limit"],
+[data-part~="rail-needs"] {
+    color: var(--warn);
+}
+
+[data-part~="session-row"][data-state="failed"] [data-part~="session-quick"] {
+    color: var(--err);
+}
+
+[data-part~="session-ask"] {
+    border-color: var(--warn-line);
+    background: var(--warn-soft);
+}
+
+/* ── Messages: cyan human channel, quiet prose, magenta linked-agent channel ── */
+[data-part~="prompt"] {
+    position: relative;
+    background: linear-gradient(115deg, var(--accent-soft), transparent 70%), var(--card);
+    border-color: var(--line);
+    border-inline-start: 2px solid var(--accent-line);
+    border-radius: var(--r-card);
+}
+
+[data-part~="prompt"][data-from="me"] {
+    border-inline-start-color: var(--accent);
+}
+
+[data-part~="prompt"][data-from="linked"] {
+    background: linear-gradient(115deg, color-mix(in srgb, var(--spark) 12%, transparent), transparent 70%), var(--card);
+    border-inline-start-color: var(--spark);
+}
+
+[data-part~="prompt"][data-from="other"] {
+    background: var(--card);
+    border-inline-start-color: var(--line-strong);
+}
+
+/* A small chamfer motif, not a clip-path on the card: text, focus and files stay intact. */
+[data-part~="prompt"]::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(45deg, transparent 45%, var(--accent-line) 46% 52%, transparent 53%);
+    pointer-events: none;
+}
+
+[data-part~="reply"] {
+    color: var(--body);
+}
+
+[data-part~="reply-quote"],
+[data-part~="quote-strip"] {
+    background-color: var(--accent-soft);
+    border-color: var(--accent-line);
+}
+
+[data-part~="code-block"] {
+    border-color: var(--line);
+    border-radius: var(--r-card);
+    background: var(--code-bg);
+    box-shadow: inset 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+[data-part~="code-head"] {
+    font-family: var(--mono);
+    color: var(--brand);
+    background: color-mix(in srgb, var(--panel) 70%, var(--code-bg));
+    border-color: color-mix(in srgb, var(--spark) 35%, var(--line));
+    box-shadow: inset 2px 0 var(--spark);
+}
+
+[data-part~="inline-code"] {
+    color: color-mix(in srgb, var(--accent) 65%, var(--body));
+    background: var(--accent-soft);
+    border-radius: var(--r-tag);
+}
+
+/* ── Activity: keep the timeline geometry, state icons and readable tool output ── */
+[data-part~="activity"] {
+    background: color-mix(in srgb, var(--panel) 44%, var(--bg));
+    border-color: color-mix(in srgb, var(--spark) 36%, var(--line));
+    border-radius: var(--r-card);
+}
+
+[data-part~="activity-head"] {
+    color: var(--spark);
+    background: color-mix(in srgb, var(--spark) 7%, var(--panel));
+}
+
+[data-part~="activity"][data-state="open"] > [data-part~="activity-head"] {
+    background: color-mix(in srgb, var(--spark) 10%, var(--panel));
+    border-color: color-mix(in srgb, var(--spark) 36%, var(--line));
+}
+
+[data-part~="thinking"] [data-part~="step-mark"] {
+    color: var(--spark);
+    background: color-mix(in srgb, var(--spark) 12%, var(--bg));
+    border-radius: var(--r-mark);
+}
+
+[data-part~="tool-call"] [data-part~="step-mark"] {
+    border-radius: var(--r-mark);
+}
+
+[data-part~="tool-call"][data-state="running"] [data-part~="step-mark"] {
+    color: var(--spark);
+    background: color-mix(in srgb, var(--spark) 18%, var(--bg));
+}
+
+[data-part~="thinking"] [data-part~="step-label"],
+[data-part~="tool-call"][data-state="running"] [data-part~="step-label"] {
+    color: var(--spark);
+}
+
+[data-part~="tool-call"][data-state="running"] [data-part~="step-head"] {
+    background-color: color-mix(in srgb, var(--spark) 6%, transparent);
+}
+
+[data-part~="tool-call"][data-state="ok"] [data-part~="step-mark"] {
+    color: var(--ok);
+    background: color-mix(in srgb, var(--ok) 12%, var(--bg));
+}
+
+[data-part~="tool-call"]:is([data-state="failed"], [data-state="denied"]) [data-part~="step-mark"] {
+    color: var(--err);
+    background: color-mix(in srgb, var(--err) 12%, var(--bg));
+}
+
+[data-part~="tool-call"][data-state="waiting"] [data-part~="step-mark"] {
+    color: var(--warn);
+    background: color-mix(in srgb, var(--warn) 12%, var(--bg));
+}
+
+[data-part~="tool-call"][data-state="waiting"] [data-part~="step-head"] {
+    background-color: var(--warn-soft);
+}
+
+[data-part~="tool-call"][data-state="stopped"] [data-part~="step-mark"] {
+    color: var(--muted);
+    background: var(--card-2);
+}
+
+[data-part~="approval"] {
+    border-color: var(--warn-line);
+    background-color: color-mix(in srgb, var(--warn) 9%, var(--card));
+}
+
+[data-part~="live-line"] {
+    color: var(--spark);
+    font-family: var(--mono);
+}
+
+/* ── Composer: the main instrument, a precise cyan outline only when focused ── */
+[data-part~="message-box"] {
+    background: var(--card);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-window);
+    box-shadow: inset 0 1px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+[data-part~="message-box"]:focus-within {
+    border-color: var(--focus-ring);
+    box-shadow: 0 0 0 2px var(--accent-soft), 0 0 18px -8px var(--accent-line);
+}
+
+[data-part~="composer-button"],
+[data-part~="model-chip"],
+[data-part~="send-button"] {
+    border-radius: var(--r-control);
+}
+
+/* A persistent magenta instrument, without overriding model warning text. */
+[data-part~="model-chip"] {
+    background-color: color-mix(in srgb, var(--spark) 9%, var(--panel));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--spark) 45%, transparent);
+}
+
+[data-part~="plan-chip"][aria-pressed="true"] {
+    color: var(--spark);
+    background: color-mix(in srgb, var(--spark) 12%, transparent);
+}
+
+[data-part~="send-button"][data-state="ready"]:not(:disabled) {
+    color: var(--accent-ink);
+    background: var(--accent-fill);
+    box-shadow: 0 0 14px -7px var(--accent);
+}
+
+/* ── Dialogs and auxiliary instruments: no blur, clipping or layout replacement ── */
+[data-part~="sheet"],
+[data-part~="menu"],
+[data-part~="session-menu"],
+[data-part~="launcher"] {
+    background-color: var(--panel);
+    border-color: var(--line-strong);
+    box-shadow: var(--pop);
+}
+
+[data-part~="sheet-head"] {
+    border-color: var(--line);
+    background-color: color-mix(in srgb, var(--card) 70%, var(--panel));
+}
+
+[data-part~="launcher-input"] {
+    color: var(--accent);
+    background-color: var(--bg);
+    border-color: var(--hair-2);
+}
+
+[data-part~="launcher-input"]:focus-within {
+    border-color: var(--focus-ring);
+}
+
+[data-part~="launcher-row"][aria-selected="true"] {
+    background: var(--accent-soft);
+    box-shadow: inset 0 0 0 1px var(--accent-line);
+}
+
+[data-part~="people-panel"],
+[data-part~="files-panel"],
+[data-part~="browser-panel"],
+[data-part~="extension-panel"],
+[data-part~="pip"],
+[data-part~="peek-tile"] {
+    background-color: var(--panel);
+}
+
+[data-part~="notice"] {
+    background-color: var(--card);
+    border-color: var(--line-strong);
+    box-shadow: var(--shadow);
+}
+
+/* Grid only on the home screen: never over messages, approvals or editor text. */
+[data-part~="home"] {
+    background-image:
+        radial-gradient(ellipse at 75% 5%, color-mix(in srgb, var(--spark) 9%, transparent), transparent 60%),
+        linear-gradient(color-mix(in srgb, var(--accent) 3%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--accent) 3%, transparent) 1px, transparent 1px);
+    background-size: auto, 48px 48px, 48px 48px;
+}
+
+[data-part~="home-logo"] {
+    color: var(--brand);
+}
+
+/* Mouse feedback cannot become a stuck hover on touch screens. */
+@media (hover: hover) and (pointer: fine) {
+    [data-part~="rail-button"]:hover,
+    [data-part~="composer-button"]:not(:disabled):hover,
+    [data-part~="model-chip"]:not(:disabled):hover {
+        background-color: color-mix(in srgb, var(--spark) 14%, var(--panel));
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--spark) 60%, transparent);
+    }
+
+    [data-part~="session-row"]:not([data-state="waiting"]):not(:has([aria-current="page"])):hover {
+        background: color-mix(in srgb, var(--spark) 10%, var(--panel));
+    }
+
+    [data-part~="activity-head"]:hover,
+    [data-part~="activity"][data-state="open"] > [data-part~="activity-head"]:hover {
+        background: color-mix(in srgb, var(--spark) 16%, var(--panel));
+    }
+
+    [data-part~="send-button"][data-state="ready"]:not(:disabled):hover {
+        background: color-mix(in srgb, var(--accent-fill) 88%, var(--text));
+        box-shadow: 0 0 18px -6px var(--accent-line);
+    }
+
+    [data-part~="stop-button"]:hover {
+        background-color: var(--err-soft);
+        box-shadow: inset 0 0 0 1px var(--err-line);
+    }
+}
+
+/* Existing focus rings, tap-area pseudo-elements and phone sheets stay in place. */
+@media (max-width: 699px) {
+    [data-part~="topbar"]::after {
+        width: 104px;
+        inset-inline-end: 12px;
+    }
+
+    [data-part~="prompt"] {
+        border-radius: var(--r-card);
+    }
+
+    [data-part~="sheet"] {
+        border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+    }
+}
+
+/* No added animation. These short transitions respect both motion controls. */
+:root:not([data-motion="reduced"]) [data-part~="message-box"] {
+    transition: border-color var(--t-hover) ease-out, box-shadow var(--t-hover) ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root:not([data-motion="reduced"]) [data-part~="message-box"] {
+        transition: none;
+    }
+}
+
+/* Keep the browser's own high-contrast focus and state affordances effective. */
+@media (forced-colors: active) {
+    [data-part~="prompt"]::after,
+    [data-part~="topbar"]::after {
+        display: none;
+    }
+
+    [data-part~="session-button"][aria-current="page"] {
+        border-inline-start-color: Highlight;
+    }
+
+    [data-part~="message-box"]:focus-within {
+        outline: 2px solid Highlight;
+        outline-offset: 2px;
+    }
+}

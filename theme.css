@@ -1,0 +1,113 @@
+@import "fonts.css";
+/*
+ * NEON//2077 · Theme API 1 · Pi Pocket >= 0.27.0
+ * Color lives in colors.toml. Every UI color below follows the selected palette.
+ * Only documented tokens and parts are used. No network resources or scripts.
+ *
+ * Appearance may prepend @import "fonts.css" here. Its font choices must win.
+ */
+@import "interface.css";
+
+:root {
+    /* Void-black ground, midnight-navy instruments, restrained raised surfaces. */
+    --desk: var(--o-bg-darker);
+    --bg: var(--o-bg);
+    --panel: color-mix(in srgb, var(--o-bg-light) 64%, var(--bg));
+    --card: var(--o-bg-light);
+    --card-2: color-mix(in srgb, var(--body) 5%, var(--card));
+    --raised: color-mix(in srgb, var(--accent) 10%, var(--card));
+    --hover: color-mix(in srgb, var(--accent-2) 10%, transparent);
+    --pressed: color-mix(in srgb, var(--accent) 15%, transparent);
+    --scrim: color-mix(in srgb, var(--desk) 78%, transparent);
+    --code-bg: var(--o-bg-dark);
+
+    /* Cool technical outlines, not glowing boxes around everything. */
+    --line: color-mix(in srgb, var(--o-blue) 22%, var(--bg));
+    --line-strong: color-mix(in srgb, var(--o-blue) 42%, var(--bg));
+    --edge: color-mix(in srgb, var(--o-blue) 32%, transparent);
+    --hair: color-mix(in srgb, var(--o-blue) 19%, transparent);
+    --hair-2: color-mix(in srgb, var(--o-blue) 33%, transparent);
+
+    --text: var(--o-fg-bright);
+    --body: var(--o-fg);
+    --muted: var(--o-fg-dim);
+    /* Even the quiet metadata remains legible on navy panels. */
+    --faint: color-mix(in srgb, var(--muted) 85%, var(--body));
+
+    --accent: var(--o-accent);
+    --accent-2: var(--o-magenta);
+    --accent-fill: var(--accent);
+    --accent-ink: var(--bg);
+    --accent-soft: color-mix(in srgb, var(--accent) 9%, transparent);
+    --accent-line: color-mix(in srgb, var(--accent) 48%, transparent);
+    --focus-ring: var(--accent);
+    --spark: var(--accent-2);
+    --brand: var(--warn);
+    --ok: var(--o-green);
+    --ok-soft: color-mix(in srgb, var(--ok) 9%, transparent);
+    --warn: var(--o-yellow);
+    --warn-soft: color-mix(in srgb, var(--warn) 12%, transparent);
+    --warn-line: color-mix(in srgb, var(--warn) 68%, transparent);
+    --err: var(--o-red);
+    --err-soft: color-mix(in srgb, var(--err) 10%, transparent);
+    --err-line: color-mix(in srgb, var(--err) 50%, transparent);
+
+    /* A terminal palette with no text glow. */
+    --hl-kw: var(--o-magenta);
+    --hl-str: var(--o-green);
+    --hl-num: var(--o-orange);
+    --hl-fn: var(--o-cyan);
+    --hl-type: var(--o-yellow);
+    --hl-op: var(--o-blue);
+    --hl-tag: color-mix(in srgb, var(--o-magenta) 65%, var(--body));
+
+    --sans: "Pocket Inter", ui-sans-serif, system-ui, sans-serif;
+    --mono: "Pocket Fira Code", "Pocket Nerd Symbols", ui-monospace, monospace;
+
+    /* Squared instruments; chips stay compact, not razor-edged. */
+    --r-mark: 2px;
+    --r-tag: 3px;
+    --r-seg: 3px;
+    --r-row: 4px;
+    --r-control: 4px;
+    --r-card: 5px;
+    --r-window: 6px;
+    --r-sheet: 8px;
+    --r-float: 8px;
+    --r-pill: 5px;
+    --radius: var(--r-control);
+
+    /* Comfortable-width only. Inline Appearance choices still win. */
+    --transcript-width: clamp(720px, 76%, 1160px);
+    --composer-width: calc(var(--transcript-width) + 48px);
+
+    --window-border: var(--line);
+    --window-border-active: var(--accent-line);
+    --window-ring: 0 0 0 1px var(--accent-soft);
+    --sh: rgb(0 0 0 / 0.55);
+    --shadow: 0 12px 32px -16px var(--sh);
+    --pop: 0 24px 64px -18px var(--sh), 0 0 0 1px var(--hair-2);
+}
+
+/* Colors and Theme remain independent. A chosen light palette stays usable. */
+:root[data-mode="light"] {
+    --panel: color-mix(in srgb, var(--body) 3%, var(--bg));
+    --card: color-mix(in srgb, var(--body) 4%, var(--bg));
+    --muted: color-mix(in srgb, var(--body) 80%, var(--bg));
+    --faint: color-mix(in srgb, var(--body) 72%, var(--bg));
+    --accent-fill: color-mix(in oklab, var(--accent) 72%, var(--body));
+    --accent-ink: var(--bg);
+    --spark: color-mix(in oklab, var(--o-magenta) 60%, var(--body));
+    --accent-2: var(--spark);
+    --ok: color-mix(in oklab, var(--o-green) 62%, var(--body));
+    --warn: color-mix(in oklab, var(--o-yellow) 40%, var(--body));
+    --err: color-mix(in oklab, var(--o-red) 75%, var(--body));
+    --hl-kw: color-mix(in oklab, var(--o-magenta) 50%, var(--body));
+    --hl-str: color-mix(in oklab, var(--o-green) 50%, var(--body));
+    --hl-num: color-mix(in oklab, var(--o-orange) 50%, var(--body));
+    --hl-fn: color-mix(in oklab, var(--o-cyan) 50%, var(--body));
+    --hl-type: color-mix(in oklab, var(--o-yellow) 40%, var(--body));
+    --hl-op: color-mix(in oklab, var(--o-blue) 50%, var(--body));
+    --hl-tag: color-mix(in oklab, var(--o-magenta) 50%, var(--body));
+    --sh: rgb(16 24 48 / 0.16);
+}

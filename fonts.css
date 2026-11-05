@@ -1,0 +1,6 @@
+/* Set in Appearance (Fonts), over the theme's own: changes here are overwritten there. */
+:root {
+    --sans: "Pocket Inter", system-ui, ui-sans-serif, sans-serif !important;
+    --mono: "Pocket Mono", "Pocket Nerd Symbols", ui-monospace, monospace !important;
+    --ligatures: none !important;
+}
