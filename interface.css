@@ -34,7 +34,7 @@
     inset-inline-end: 18px;
     width: 176px;
     height: 2px;
-    background: linear-gradient(
+    --neon-2077-signal: linear-gradient(
         90deg,
         transparent 0 4%,
         var(--accent) 4% 26%,
@@ -43,6 +43,7 @@
         transparent 76% 82%,
         var(--brand) 82% 100%
     );
+    background: var(--neon-2077-signal);
     pointer-events: none;
 }
 
@@ -418,14 +419,68 @@
     }
 }
 
-/* No added animation. These short transitions respect both motion controls. */
-:root:not([data-motion="reduced"]) [data-part~="message-box"] {
-    transition: border-color var(--t-hover) ease-out, box-shadow var(--t-hover) ease-out;
+/* ── Live HUD: small state-driven effects, never over text or approvals ── */
+@keyframes neon-2077-signal-flow {
+    from {
+        background-position: -80% 0, 0 0;
+    }
+    to {
+        background-position: 180% 0, 0 0;
+    }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@keyframes neon-2077-tool-pulse {
+    0%, 100% {
+        /* Keep the opaque ring that masks the timeline behind the mark. */
+        box-shadow: 0 0 0 3px var(--bg), 0 0 4px -2px color-mix(in srgb, var(--spark) 20%, transparent);
+    }
+    50% {
+        box-shadow: 0 0 0 3px var(--bg), 0 0 10px -1px color-mix(in srgb, var(--spark) 38%, transparent);
+    }
+}
+
+@keyframes neon-2077-focus-ignite {
+    from {
+        /* Outer shadows throughout: inset/outer pairs would switch abruptly. */
+        box-shadow: 0 0 0 0 var(--accent-soft), 0 0 0 -8px var(--accent-line);
+    }
+    45% {
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent), 0 0 22px -6px var(--accent-line);
+    }
+    to {
+        /* End on the steady focus style; no fill mode or persistent glow. */
+        box-shadow: 0 0 0 2px var(--accent-soft), 0 0 18px -8px var(--accent-line);
+    }
+}
+
+/* Both the system and Appearance can disable every added motion effect. */
+@media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
+    /* The current pane's live line covers thinking, streaming and compaction.
+       Ignore other sessions, approval waits and provider-limit waits. */
+    :root:not([data-motion="reduced"]) [data-part~="pane"]:has([data-part~="transcript"] [data-part~="live-line"]):not(:has([data-part~="transcript"] [data-part~="approval"], [data-part~="transcript"] [data-part~="live-limit"])) [data-part~="topbar"]::after {
+        background-image:
+            linear-gradient(90deg, transparent, color-mix(in srgb, var(--text) 64%, transparent), transparent),
+            var(--neon-2077-signal);
+        background-size: 42% 100%, 100% 100%;
+        background-repeat: no-repeat;
+        /* The same alpha mask keeps the signal's gaps clear during the sweep. */
+        mask-image: var(--neon-2077-signal);
+        animation: neon-2077-signal-flow 2.4s linear infinite;
+    }
+
+    :root:not([data-motion="reduced"]) [data-part~="tool-call"][data-state="running"] [data-part~="step-mark"] {
+        /* The existing state icon and its own spinner remain unchanged. */
+        animation: neon-2077-tool-pulse 2.2s ease-in-out infinite;
+    }
+
     :root:not([data-motion="reduced"]) [data-part~="message-box"] {
-        transition: none;
+        transition: border-color var(--t-hover) ease-out, box-shadow var(--t-hover) ease-out;
+    }
+
+    :root:not([data-motion="reduced"]) [data-part~="message-box"]:focus-within {
+        /* The ignition owns the shadow; do not run a competing transition. */
+        transition-property: border-color;
+        animation: neon-2077-focus-ignite 240ms ease-out;
     }
 }
 
